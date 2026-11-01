@@ -1,0 +1,164 @@
+---
+interface Props {
+  title: string;
+}
+
+const { title } = Astro.props;
+---
+
+<!doctype html>
+<html lang="id">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="description" content="Roda Takdir Kelas — Alat undian nama, pembagi kelompok, dan pengacak urutan kelas." />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Berkshire+Swash&family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap"
+      rel="stylesheet"
+    />
+    <title>{title}</title>
+  </head>
+  <body>
+    <slot />
+  </body>
+</html>
+
+<style is:global>
+  :root {
+    --bg-lavender: #7D5BFF;
+    --bg-app-surface: #F6F5FC;
+    --bg-card: #FFFFFF;
+    --bg-pill-cream: #FFF5E5;
+    --bg-pill-purple: #F1EEFF;
+
+    --text-dark: #1E1B2E;
+    --text-purple-title: #4E3797;
+    --text-secondary: #7C7894;
+    --text-muted: #A09DB8;
+
+    --purple-primary: #673EF8;
+    --purple-mid: #7A54FF;
+    --purple-deep: #532BC9;
+    --purple-soft: #9678FF;
+
+    --honey-top: #FFB838;
+    --honey-bot: #F5931E;
+    --honey-text: #F2911B;
+
+    --sky-top: #56BFF8;
+    --sky-bot: #3A9CE2;
+
+    --pink-pointer: #FF5B93;
+
+    --border-soft: #ECEAF6;
+    --shadow-card: 0 12px 32px rgba(78, 55, 151, 0.08);
+    --shadow-float: 0 20px 50px rgba(45, 24, 114, 0.22);
+
+    --font-script: 'Berkshire Swash', Georgia, serif;
+    --font-sans: 'Plus Jakarta Sans', -apple-system, BlinkMacSystemFont, sans-serif;
+  }
+
+  *,
+  *::before,
+  *::after {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+  }
+
+  html {
+    font-size: 16px;
+    background-color: var(--bg-app-surface);
+    color: var(--text-dark);
+    font-family: var(--font-sans);
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+  }
+
+  body {
+    min-height: 100vh;
+    line-height: 1.5;
+    background: linear-gradient(145deg, #8C6BFF 0%, #653DF5 55%, #512BD4 100%);
+    background-attachment: fixed;
+  }
+
+  button,
+  input,
+  textarea {
+    font: inherit;
+    color: inherit;
+  }
+
+  button {
+    cursor: pointer;
+    background: none;
+    border: none;
+  }
+
+  /* Pola Honeycomb Hexagon Halus seperti di latar kartu new-1.png */
+  .honeycomb-bg {
+    background-image: radial-gradient(rgba(103, 62, 248, 0.045) 1.5px, transparent 1.5px),
+      radial-gradient(rgba(103, 62, 248, 0.045) 1.5px, transparent 1.5px);
+    background-size: 24px 24px;
+    background-position: 0 0, 12px 12px;
+  }
+
+  /* Tombol Oranye-Madu ("Play now" di new-1.png) */
+  .btn-honey {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0.5rem;
+    padding: 0.72rem 1.45rem;
+    background: linear-gradient(180deg, var(--honey-top) 0%, var(--honey-bot) 100%);
+    color: #FFFFFF;
+    font-weight: 700;
+    font-size: 0.9rem;
+    border-radius: 12px;
+    box-shadow: 0 6px 16px rgba(245, 147, 30, 0.32);
+    transition: transform 0.15s ease, box-shadow 0.15s ease, filter 0.15s ease;
+  }
+
+  .btn-honey:hover:not(:disabled) {
+    transform: translateY(-1px);
+    filter: brightness(1.03);
+    box-shadow: 0 8px 20px rgba(245, 147, 30, 0.42);
+  }
+
+  .btn-honey:active:not(:disabled) {
+    transform: translateY(1px);
+  }
+
+  .btn-honey:disabled {
+    background: linear-gradient(180deg, #C7C9D9 0%, #AEB1C4 100%);
+    box-shadow: none;
+    cursor: not-allowed;
+  }
+
+  /* Badge Tiket / Koin Krem Hangat ("50" / "20" di new-1.png) */
+  .ticket-pill {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.35rem;
+    padding: 0.28rem 0.75rem;
+    background-color: var(--bg-pill-cream);
+    color: var(--honey-text);
+    font-size: 0.78rem;
+    font-weight: 700;
+    border-radius: 999px;
+  }
+
+  .sr-only {
+    position: absolute;
+    width: 1px;
+    height: 1px;
+    padding: 0;
+    margin: -1px;
+    overflow: hidden;
+    clip: rect(0, 0, 0, 0);
+    white-space: nowrap;
+    border: 0;
+  }
+</style>

@@ -1,0 +1,50 @@
+---
+import Layout from '../layouts/Layout.astro';
+import Topbar from '../components/Topbar.astro';
+import NameInputPanel from '../components/NameInputPanel.astro';
+import WheelStage from '../components/WheelStage.astro';
+import HistorySection from '../components/HistorySection.astro';
+import HistoryDetailModal from '../components/HistoryDetailModal.astro';
+import '../styles/results.css';
+---
+
+<Layout title="Roda Takdir Kelas">
+  <div class="beelucky-shell">
+    <Topbar />
+
+    <!-- Tata letak 2 kolom seperti 2 layar pada new-1.png: Kiri "Spin the Wheel", Kanan "Hero + Kartu Mode + Input" -->
+    <main class="dual-screen-grid">
+      <WheelStage />
+      <NameInputPanel />
+    </main>
+
+    <HistorySection />
+    <HistoryDetailModal />
+  </div>
+</Layout>
+
+<style>
+  .beelucky-shell {
+    max-width: 1180px;
+    margin: 0 auto;
+    padding: 1.75rem 1.5rem 3.5rem;
+  }
+
+  .dual-screen-grid {
+    display: grid;
+    grid-template-columns: 1fr 1.05fr;
+    gap: 1.75rem;
+    align-items: start;
+  }
+
+  @media (max-width: 920px) {
+    .dual-screen-grid {
+      grid-template-columns: 1fr;
+    }
+  }
+</style>
+
+<script>
+  import { initApp } from '../scripts/app';
+  initApp();
+</script>

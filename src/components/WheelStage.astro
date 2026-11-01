@@ -1,0 +1,232 @@
+---
+
+---
+
+<section class="wheel-phone-card honeycomb-bg" aria-label="Spin the Wheel">
+  <!-- Judul Bergaya "Spin the Wheel / and win coupons" di new-1.png -->
+  <div class="wheel-header">
+    <h1 class="script-heading">Spin the Wheel</h1>
+    <p id="modeDescription" class="wheel-subtitle">
+      Pilih mode dan putar roda takdir kelas
+    </p>
+  </div>
+
+  <!-- Panggung Roda Ungu-Emas-Biru -->
+  <div class="wheel-stage-box">
+    <div class="wheel-container">
+      <!-- Segitiga Penunjuk Pink di Atas (12 o'clock persis seperti di new-1.png) -->
+      <div class="pink-pointer" aria-hidden="true">
+        <svg width="38" height="36" viewBox="0 0 38 36" fill="none">
+          <path
+            d="M19 34L4 4H34L19 34Z"
+            fill="url(#pinkGrad)"
+            stroke="#FF8BB3"
+            stroke-width="2"
+            stroke-linejoin="round"></path>
+          <defs>
+            <linearGradient
+              id="pinkGrad"
+              x1="19"
+              y1="4"
+              x2="19"
+              y2="34"
+              gradientUnits="userSpaceOnUse"
+            >
+              <stop stop-color="#FF74A4"></stop>
+              <stop offset="1" stop-color="#F03E78"></stop>
+            </linearGradient>
+          </defs>
+        </svg>
+      </div>
+
+      <canvas id="wheelCanvas" width="540" height="540"></canvas>
+
+      <!-- Tombol Pusat Ungu Berbingkai Putih dengan Ikon Panah Putar (⟳) seperti di new-1.png -->
+      <button
+        type="button"
+        id="centerSpinBtn"
+        class="center-refresh-btn"
+        aria-label="Putar Roda"
+        title="Putar Roda"
+      >
+        <svg
+          width="28"
+          height="28"
+          viewBox="0 0 24 24"
+          fill="none"
+          aria-hidden="true"
+        >
+          <path
+            d="M17.65 6.35C16.2 4.9 14.21 4 12 4C7.58 4 4.01 7.58 4.01 12C4.01 16.42 7.58 20 12 20C15.73 20 18.84 17.45 19.73 14H17.65C16.83 16.33 14.61 18 12 18C8.69 18 6 15.31 6 12C6 8.69 8.69 6 12 6C13.66 6 15.14 6.69 16.22 7.78L13 11H20V4L17.65 6.35Z"
+            fill="#FFFFFF"></path>
+        </svg>
+      </button>
+    </div>
+  </div>
+
+  <!-- Banner Hasil Putaran (Bergaya kartu ungu berbintang emas "Win in the Daily Draw 100€" di new-1.png) -->
+  <div id="resultContainer" class="result-draw-card" aria-live="polite">
+    <div class="result-top-bar">
+      <button type="button" id="copyResultBtn" class="btn-outline-sm" hidden>
+        Salin Hasil
+      </button>
+    </div>
+
+    <h3 id="resultTitle" class="result-heading">Belum ada putaran</h3>
+
+    <div id="resultBody" class="result-body">
+      <p class="empty-state-text">
+        Masukkan daftar nama di sebelah kanan, pilih mode <strong>Undian</strong
+        >, <strong>Kelompok</strong>, atau <strong>Urutan Nama</strong>, lalu
+        tekan tombol <strong>Putar Sekarang</strong>.
+      </p>
+    </div>
+  </div>
+</section>
+
+<style>
+  .wheel-phone-card {
+    background-color: #ffffff;
+    border-radius: 28px;
+    padding: 2rem 1.5rem 1.6rem;
+    box-shadow: var(--shadow-card);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 1.4rem;
+    overflow: hidden;
+  }
+
+  .wheel-header {
+    text-align: center;
+  }
+
+  .script-heading {
+    font-family: var(--font-script);
+    font-weight: 400;
+    font-size: clamp(2.1rem, 3.2vw, 2.65rem);
+    color: var(--text-purple-title);
+    line-height: 1.15;
+  }
+
+  .wheel-subtitle {
+    font-size: 0.88rem;
+    font-weight: 500;
+    color: var(--text-secondary);
+    margin-top: 0.25rem;
+  }
+
+  .wheel-stage-box {
+    width: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: 0.5rem 0;
+  }
+
+  .wheel-container {
+    position: relative;
+    width: min(100%, 420px);
+    aspect-ratio: 1 / 1;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    filter: drop-shadow(0 14px 30px rgba(83, 43, 201, 0.2));
+  }
+
+  #wheelCanvas {
+    width: 100%;
+    height: 100%;
+    display: block;
+  }
+
+  .pink-pointer {
+    position: absolute;
+    top: -4px;
+    left: 0;
+    right: 0;
+    margin-inline: auto;
+    width: 38px;
+    height: 36px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    z-index: 4;
+    pointer-events: none;
+    filter: drop-shadow(0 5px 8px rgba(83, 43, 201, 0.3));
+  }
+
+  .pink-pointer svg {
+    display: block;
+    width: 38px;
+    height: 36px;
+  }
+
+  /* Tombol Pusat Ungu Berbingkai Putih seperti di new-1.png */
+  .center-refresh-btn {
+    position: absolute;
+    inset: 0;
+    margin: auto;
+    width: 78px;
+    height: 78px;
+    border-radius: 50%;
+    background: linear-gradient(145deg, #8b66ff 0%, #5f35f5 100%);
+    border: 6px solid #ffffff;
+    box-shadow:
+      0 6px 18px rgba(55, 25, 140, 0.32),
+      inset 0 2px 4px rgba(255, 255, 255, 0.35);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    z-index: 3;
+    transition:
+      transform 0.15s ease,
+      box-shadow 0.15s ease;
+  }
+
+  .center-refresh-btn:hover:not(:disabled) {
+    transform: scale(1.06);
+    box-shadow:
+      0 8px 22px rgba(55, 25, 140, 0.42),
+      inset 0 2px 4px rgba(255, 255, 255, 0.45);
+  }
+
+  .center-refresh-btn:active:not(:disabled) {
+    transform: scale(0.97);
+  }
+
+  .center-refresh-btn:disabled {
+    opacity: 0.65;
+    cursor: not-allowed;
+  }
+
+  /* Kartu Hasil Putaran di Bawah Roda */
+  .result-draw-card {
+    width: 100%;
+    background-color: #faf9fe;
+    border: 1.5px solid var(--border-soft);
+    border-radius: 22px;
+    padding: 1.25rem 1.35rem;
+  }
+
+  .result-top-bar {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 0.75rem;
+    margin-bottom: 0.5rem;
+  }
+
+  .result-heading {
+    font-size: 1.15rem;
+    font-weight: 800;
+    color: var(--text-dark);
+    margin-bottom: 0.85rem;
+  }
+
+  .empty-state-text {
+    font-size: 0.86rem;
+    color: var(--text-secondary);
+    line-height: 1.6;
+  }
+</style>

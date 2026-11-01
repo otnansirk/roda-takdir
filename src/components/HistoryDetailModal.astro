@@ -1,0 +1,312 @@
+---
+
+---
+
+<dialog
+  id="historyModal"
+  closedby="any"
+  aria-labelledby="modalTitle"
+  class="detail-dialog"
+>
+  <div class="modal-inner">
+    <!-- Kanvas Confetti berada absolut di dalam kartu modal agar tidak mendorong elemen -->
+    <canvas id="confettiCanvas" class="confetti-overlay" aria-hidden="true"
+    ></canvas>
+
+    <!-- Header Ungu Terpadu Berbintang Emas (Bergaya "Win in the Daily Draw" di new-1.png) -->
+    <div class="modal-header modal-hero-header">
+      <span class="star-deco star-l1" aria-hidden="true">★</span>
+      <span class="star-deco star-l2" aria-hidden="true">★</span>
+      <span class="star-deco star-r1" aria-hidden="true">★</span>
+
+      <div class="modal-header-top">
+        <div class="modal-meta-pills">
+          <span id="modalCelebrationPill" class="pill-celebration" hidden
+            >🎉 PUTARAN SELESAI</span
+          >
+          <span id="modalCategoryTag" class="pill-category">Detail Riwayat</span
+          >
+          <time id="modalTimestamp" class="modal-time"></time>
+        </div>
+
+        <form method="dialog">
+          <button
+            type="submit"
+            class="modal-icon-close"
+            aria-label="Tutup modal"
+            autofocus
+          >
+            ✕
+          </button>
+        </form>
+      </div>
+
+      <h2 id="modalTitle" class="modal-heading">Detail Hasil Putaran</h2>
+      <p id="celebrationSubtext" class="modal-subtitle">
+        Berikut rincian lengkap hasil putaran Roda Takdir Kelas
+      </p>
+    </div>
+
+    <!-- Isi Hasil Putaran -->
+    <div id="modalBody" class="modal-body">
+      <!-- Diisi oleh JavaScript -->
+    </div>
+
+    <!-- Footer Aksi Rapi -->
+    <div class="modal-footer">
+      <button type="button" id="modalCopyBtn" class="btn-modal-copy">
+        Salin Hasil
+      </button>
+    </div>
+  </div>
+</dialog>
+
+<style is:global>
+  #historyModal.detail-dialog {
+    margin: auto;
+    width: min(92vw, 660px);
+    max-height: 86vh;
+    border: none;
+    border-radius: 26px;
+    background: transparent;
+    color: var(--text-dark);
+    padding: 0;
+    box-shadow: 0 24px 64px rgba(32, 14, 90, 0.42);
+  }
+
+  .detail-dialog:modal {
+    overscroll-behavior: contain;
+  }
+
+  .detail-dialog[open] {
+    display: flex;
+    flex-direction: column;
+  }
+
+  .detail-dialog::backdrop {
+    background-color: rgba(30, 16, 78, 0.56);
+    backdrop-filter: blur(5px);
+    overflow: hidden;
+    overscroll-behavior: contain;
+  }
+
+  .modal-inner {
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    width: 100%;
+    max-height: 86vh;
+    border-radius: 26px;
+    overflow: hidden;
+    background-color: #ffffff;
+  }
+
+  .confetti-overlay {
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+    pointer-events: none;
+    z-index: 15;
+  }
+
+  /* Header Ungu Meriah Terpadu */
+  .modal-hero-header {
+    position: relative;
+    background: linear-gradient(135deg, #7c5bff 0%, #5832e5 100%);
+    color: #ffffff;
+    padding: 1.4rem 1.65rem 1.35rem;
+    overflow: hidden;
+    flex-shrink: 0;
+  }
+
+  .modal-header-top {
+    position: relative;
+    z-index: 2;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 0.75rem;
+    margin-bottom: 0.65rem;
+  }
+
+  .modal-meta-pills {
+    display: flex;
+    align-items: center;
+    gap: 0.45rem;
+    flex-wrap: wrap;
+  }
+
+  .pill-celebration {
+    display: inline-flex;
+    align-items: center;
+    padding: 0.24rem 0.75rem;
+    border-radius: 999px;
+    background: linear-gradient(
+      180deg,
+      var(--honey-top) 0%,
+      var(--honey-bot) 100%
+    );
+    color: #ffffff;
+    font-size: 0.7rem;
+    font-weight: 800;
+    letter-spacing: 0.05em;
+    box-shadow: 0 3px 10px rgba(245, 147, 30, 0.35);
+  }
+
+  .pill-category {
+    display: inline-flex;
+    align-items: center;
+    padding: 0.24rem 0.75rem;
+    border-radius: 999px;
+    background-color: rgba(255, 255, 255, 0.16);
+    color: #ffffff;
+    font-size: 0.7rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+  }
+
+  .modal-time {
+    font-size: 0.75rem;
+    font-weight: 600;
+    color: rgba(255, 255, 255, 0.8);
+    font-variant-numeric: tabular-nums;
+    margin-left: 0.15rem;
+  }
+
+  .modal-heading {
+    position: relative;
+    z-index: 2;
+    font-size: clamp(1.35rem, 2.2vw, 1.65rem);
+    font-weight: 800;
+    color: #ffffff;
+    line-height: 1.2;
+    letter-spacing: -0.01em;
+  }
+
+  .modal-subtitle {
+    position: relative;
+    z-index: 2;
+    font-size: 0.84rem;
+    font-weight: 500;
+    color: rgba(255, 255, 255, 0.86);
+    margin-top: 0.25rem;
+  }
+
+  .modal-icon-close {
+    width: 34px;
+    height: 34px;
+    border-radius: 50%;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 0.9rem;
+    font-weight: 800;
+    color: #ffffff;
+    background-color: rgba(255, 255, 255, 0.18);
+    border: 1.5px solid rgba(255, 255, 255, 0.32);
+    transition:
+      background-color 0.15s ease,
+      transform 0.15s ease;
+    flex-shrink: 0;
+  }
+
+  .modal-icon-close:hover {
+    background-color: var(--pink-pointer);
+    border-color: var(--pink-pointer);
+    transform: scale(1.06);
+  }
+
+  /* Bintang Emas Dekoratif di Latar Header */
+  .star-deco {
+    position: absolute;
+    color: rgba(255, 193, 69, 0.28);
+    pointer-events: none;
+    user-select: none;
+    z-index: 1;
+  }
+
+  .star-l1 {
+    right: 68px;
+    top: -6px;
+    font-size: 2.6rem;
+    transform: rotate(15deg);
+  }
+
+  .star-l2 {
+    right: 120px;
+    bottom: 6px;
+    font-size: 1.45rem;
+    transform: rotate(-12deg);
+  }
+
+  .star-r1 {
+    right: 22px;
+    bottom: -8px;
+    font-size: 2.2rem;
+    transform: rotate(22deg);
+  }
+
+  /* Body Hasil */
+  .modal-body {
+    padding: 1.4rem 1.65rem;
+    background-color: #f6f5fc;
+    overflow-y: auto;
+    overscroll-behavior: contain;
+    flex: 1;
+  }
+
+  /* Footer Tombol */
+  .modal-footer {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 1rem;
+    padding: 1.05rem 1.65rem;
+    border-top: 1px solid var(--border-soft);
+    background-color: #ffffff;
+    flex-shrink: 0;
+  }
+
+  .btn-modal-copy {
+    padding: 0.62rem 1.2rem;
+    border-radius: 12px;
+    background-color: var(--bg-pill-purple);
+    border: 1.5px solid #dfd8fa;
+    color: var(--purple-primary);
+    font-size: 0.84rem;
+    font-weight: 700;
+    transition:
+      background-color 0.15s ease,
+      color 0.15s ease;
+  }
+
+  .btn-modal-copy:hover {
+    background-color: var(--purple-primary);
+    border-color: var(--purple-primary);
+    color: #ffffff;
+  }
+
+  .btn-modal-done {
+    padding: 0.65rem 1.45rem;
+    border-radius: 12px;
+    background: linear-gradient(
+      180deg,
+      var(--honey-top) 0%,
+      var(--honey-bot) 100%
+    );
+    color: #ffffff;
+    font-size: 0.86rem;
+    font-weight: 800;
+    box-shadow: 0 6px 16px rgba(245, 147, 30, 0.32);
+    transition:
+      transform 0.15s ease,
+      filter 0.15s ease;
+  }
+
+  .btn-modal-done:hover {
+    transform: translateY(-1px);
+    filter: brightness(1.04);
+  }
+</style>

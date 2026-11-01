@@ -1,0 +1,348 @@
+---
+---
+
+<aside class="right-controls-stack" aria-labelledby="inputHeading">
+  <!-- Kartu Pilihan Mode (Bergaya kartu putih "Slot Machine" & "Wheel of fortune" di new-1.png) -->
+  <div class="mode-cards-grid" role="tablist" aria-label="Pilih mode putaran">
+    <button
+      type="button"
+      role="tab"
+      aria-selected="true"
+      data-mode="undian"
+      class="mode-tab mode-feature-card honeycomb-bg active"
+    >
+      <div class="feature-badge-circle purple-tint" aria-hidden="true">🎯</div>
+      <span class="feature-title">Undian</span>
+      <span class="feature-caption">PILIH ACAK</span>
+      <span class="ticket-pill">★ 1 Nama</span>
+    </button>
+
+    <button
+      type="button"
+      role="tab"
+      aria-selected="false"
+      data-mode="kelompok"
+      class="mode-tab mode-feature-card honeycomb-bg"
+    >
+      <div class="feature-badge-circle blue-tint" aria-hidden="true">👥</div>
+      <span class="feature-title">Kelompok</span>
+      <span class="feature-caption">BAGI RATA</span>
+      <span class="ticket-pill">★ Tim Kelas</span>
+    </button>
+
+    <button
+      type="button"
+      role="tab"
+      aria-selected="false"
+      data-mode="urutan"
+      class="mode-tab mode-feature-card honeycomb-bg"
+    >
+      <div class="feature-badge-circle gold-tint" aria-hidden="true">📋</div>
+      <span class="feature-title">Urutan Nama</span>
+      <span class="feature-caption">ACAK SEMUA</span>
+      <span class="ticket-pill">★ Presensi</span>
+    </button>
+  </div>
+
+  <!-- Kartu Input Daftar Nama & Pengaturan Mode (Bergaya kartu putih "Complete offers" di new-1.png) -->
+  <div class="input-white-card honeycomb-bg">
+    <div class="card-top-row">
+      <div>
+        <h2 id="inputHeading" class="card-title">Daftar Nama Peserta</h2>
+        <p class="card-sub">Pisahkan setiap nama dengan baris baru (Enter)</p>
+      </div>
+      <div class="quick-links">
+        <button type="button" id="sampleNamesBtn" class="pill-action">Isi Contoh</button>
+        <button type="button" id="clearNamesBtn" class="pill-action muted">Reset</button>
+      </div>
+    </div>
+
+    <!-- Pengaturan Jumlah Kelompok (Tampil saat mode Kelompok dipilih) -->
+    <div id="groupConfigBox" class="config-strip" hidden>
+      <label for="groupCountInput" class="config-row">
+        <span>Jumlah kelompok yang akan dibuat:</span>
+        <div class="stepper-control">
+          <button type="button" id="decGroupBtn" class="step-btn" aria-label="Kurangi jumlah kelompok">−</button>
+          <input
+            type="number"
+            id="groupCountInput"
+            min="2"
+            max="50"
+            value="4"
+          />
+          <button type="button" id="incGroupBtn" class="step-btn" aria-label="Tambah jumlah kelompok">+</button>
+        </div>
+      </label>
+    </div>
+
+    <!-- Opsi Mode Undian -->
+    <div id="undianConfigBox" class="config-strip">
+      <label class="checkbox-label">
+        <input type="checkbox" id="removePickedCheckbox" />
+        <span>Hapus otomatis nama yang sudah terpilih dari daftar</span>
+      </label>
+    </div>
+
+    <!-- Info Mode Urutan -->
+    <div id="urutanConfigBox" class="config-strip" hidden>
+      <span class="checkbox-label">Seluruh nama akan diacak urutannya dari nomor 1 hingga akhir.</span>
+    </div>
+
+    <label for="namesInput" class="sr-only">Daftar nama dipisahkan dengan Enter</label>
+    <textarea
+      id="namesInput"
+      rows="8"
+      placeholder="Ketik atau tempel daftar nama di sini...&#10;Satu nama per baris (Enter)"
+    ></textarea>
+  </div>
+</aside>
+
+<style>
+  .right-controls-stack {
+    display: flex;
+    flex-direction: column;
+    gap: 1.25rem;
+  }
+
+  /* 3 Kartu Mode ("Slot Machine" / "Wheel of fortune" di new-1.png) */
+  .mode-cards-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 0.85rem;
+  }
+
+  .mode-feature-card {
+    background-color: #FFFFFF;
+    border: 2px solid transparent;
+    border-radius: 22px;
+    padding: 1.1rem 0.75rem;
+    box-shadow: var(--shadow-card);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+    gap: 0.4rem;
+    transition: transform 0.15s ease, border-color 0.15s ease, box-shadow 0.15s ease;
+  }
+
+  .mode-feature-card:hover {
+    transform: translateY(-2px);
+  }
+
+  .mode-feature-card.active {
+    border-color: var(--purple-primary);
+    box-shadow: 0 14px 30px rgba(103, 62, 248, 0.16);
+  }
+
+  .feature-badge-circle {
+    width: 48px;
+    height: 48px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 1.35rem;
+    margin-bottom: 0.2rem;
+  }
+
+  .purple-tint {
+    background-color: #F0ECFF;
+  }
+
+  .blue-tint {
+    background-color: #E8F6FF;
+  }
+
+  .gold-tint {
+    background-color: #FFF4E0;
+  }
+
+  .feature-title {
+    font-size: 0.92rem;
+    font-weight: 800;
+    color: var(--text-dark);
+  }
+
+  .feature-caption {
+    font-size: 0.64rem;
+    font-weight: 800;
+    letter-spacing: 0.05em;
+    color: var(--honey-text);
+  }
+
+  /* Kartu Putih Input Nama */
+  .input-white-card {
+    background-color: #FFFFFF;
+    border-radius: 24px;
+    padding: 1.35rem 1.45rem;
+    box-shadow: var(--shadow-card);
+    display: flex;
+    flex-direction: column;
+    gap: 0.9rem;
+  }
+
+  .card-top-row {
+    display: flex;
+    align-items: flex-start;
+    justify-content: space-between;
+    gap: 0.75rem;
+    flex-wrap: wrap;
+  }
+
+  .card-title {
+    font-size: 1.05rem;
+    font-weight: 800;
+    color: var(--text-dark);
+  }
+
+  .card-sub {
+    font-size: 0.78rem;
+    color: var(--text-secondary);
+    margin-top: 0.1rem;
+  }
+
+  .quick-links {
+    display: flex;
+    gap: 0.4rem;
+  }
+
+  .pill-action {
+    padding: 0.32rem 0.75rem;
+    border-radius: 999px;
+    font-size: 0.75rem;
+    font-weight: 700;
+    background-color: var(--bg-pill-purple);
+    color: var(--purple-primary);
+    transition: background-color 0.15s ease, color 0.15s ease;
+  }
+
+  .pill-action:hover {
+    background-color: var(--purple-primary);
+    color: #FFFFFF;
+  }
+
+  .pill-action.muted {
+    background-color: #F3F2F8;
+    color: var(--text-secondary);
+  }
+
+  .pill-action.muted:hover {
+    background-color: var(--pink-pointer);
+    color: #FFFFFF;
+  }
+
+  .config-strip {
+    padding: 0.7rem 0.95rem;
+    background-color: #F7F6FC;
+    border-radius: 14px;
+    border: 1px solid var(--border-soft);
+  }
+
+  .config-row {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 0.75rem;
+    font-size: 0.84rem;
+    font-weight: 700;
+    color: var(--text-dark);
+  }
+
+  .stepper-control {
+    display: inline-flex;
+    align-items: center;
+    background-color: #FFFFFF;
+    border: 1.5px solid var(--border-soft);
+    border-radius: 10px;
+    padding: 0.15rem;
+  }
+
+  .step-btn {
+    width: 28px;
+    height: 28px;
+    border-radius: 7px;
+    font-weight: 800;
+    color: var(--purple-primary);
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+  }
+
+  .step-btn:hover {
+    background-color: var(--bg-pill-purple);
+  }
+
+  #groupCountInput {
+    width: 42px;
+    border: none;
+    background: transparent;
+    text-align: center;
+    font-size: 0.9rem;
+    font-weight: 800;
+    color: var(--text-dark);
+    -moz-appearance: textfield;
+  }
+
+  #groupCountInput::-webkit-outer-spin-button,
+  #groupCountInput::-webkit-inner-spin-button {
+    -webkit-appearance: none;
+    margin: 0;
+  }
+
+  #groupCountInput:focus {
+    outline: none;
+  }
+
+  .checkbox-label {
+    display: flex;
+    align-items: center;
+    gap: 0.55rem;
+    font-size: 0.82rem;
+    font-weight: 600;
+    color: var(--text-secondary);
+    cursor: pointer;
+    user-select: none;
+  }
+
+  .checkbox-label input[type='checkbox'] {
+    accent-color: var(--purple-primary);
+    width: 16px;
+    height: 16px;
+    cursor: pointer;
+  }
+
+  textarea {
+    width: 100%;
+    resize: vertical;
+    min-height: 165px;
+    padding: 0.85rem 1rem;
+    border: 1.5px solid var(--border-soft);
+    border-radius: 16px;
+    background-color: #FAF9FE;
+    font-size: 0.9rem;
+    font-weight: 500;
+    line-height: 1.6;
+    color: var(--text-dark);
+    transition: border-color 0.15s ease, background-color 0.15s ease;
+  }
+
+  textarea::placeholder {
+    color: var(--text-muted);
+  }
+
+  textarea:focus {
+    outline: none;
+    border-color: var(--purple-primary);
+    background-color: #FFFFFF;
+  }
+
+  @media (max-width: 560px) {
+    .mode-cards-grid {
+      grid-template-columns: 1fr;
+    }
+
+    .hero-ring-box {
+      display: none;
+    }
+  }
+</style>
