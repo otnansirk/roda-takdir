@@ -64,6 +64,13 @@
     </div>
   </div>
 
+  <!-- Tombol Putar Sekarang di Bawah Roda -->
+  <div class="wheel-action-row">
+    <button type="button" id="spinBtn" class="btn-honey btn-spin-under">
+      Putar Sekarang
+    </button>
+  </div>
+
   <!-- Banner Hasil Putaran (Bergaya kartu ungu berbintang emas "Win in the Daily Draw 100€" di new-1.png) -->
   <div id="resultContainer" class="result-draw-card" aria-live="polite">
     <div class="result-top-bar">
@@ -198,6 +205,19 @@
   .center-refresh-btn:disabled {
     opacity: 0.65;
     cursor: not-allowed;
+  }
+
+  .wheel-action-row {
+    width: 100%;
+    display: flex;
+    justify-content: center;
+  }
+
+  .btn-spin-under {
+    min-width: 220px;
+    padding: 0.85rem 2rem;
+    font-size: 1rem;
+    border-radius: 14px;
   }
 
   /* Kartu Hasil Putaran di Bawah Roda */

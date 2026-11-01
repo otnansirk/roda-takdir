@@ -118,7 +118,7 @@ export function drawWheelCanvas(
     ctx.font = '700 15px "Plus Jakarta Sans", sans-serif';
     ctx.textAlign = 'center';
     ctx.textBaseline = 'middle';
-    ctx.fillText('Masukkan daftar nama siswa', centerX, centerY - 68);
+    ctx.fillText('Masukkan daftar nama', centerX, centerY - 68);
     return;
   }
 

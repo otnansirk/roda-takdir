@@ -38,11 +38,12 @@ export function initApp(): void {
   const incGroupBtn = document.getElementById('incGroupBtn') as HTMLButtonElement;
   const removePickedCheckbox = document.getElementById('removePickedCheckbox') as HTMLInputElement;
 
+  const spinBtn = document.getElementById('spinBtn') as HTMLButtonElement | null;
   const centerSpinBtn = document.getElementById('centerSpinBtn') as HTMLButtonElement;
   const wheelCanvas = document.getElementById('wheelCanvas') as HTMLCanvasElement;
 
   // Elemen DOM: Hasil
-  const resultCategoryTag = document.getElementById('resultCategoryTag') as HTMLElement;
+  const resultCategoryTag = document.getElementById('resultCategoryTag') as HTMLElement | null;
   const resultTitle = document.getElementById('resultTitle') as HTMLElement;
   const resultBody = document.getElementById('resultBody') as HTMLElement;
   const copyResultBtn = document.getElementById('copyResultBtn') as HTMLButtonElement;
@@ -103,7 +104,8 @@ export function initApp(): void {
   function updateNamesUI(): void {
     const names = getCleanNames();
     alignInitialSliceToPointer(names.length);
-    nameCountBadge.textContent = `${names.length} Siswa`;
+    nameCountBadge.textContent = `${names.length} Nama`;
+    if (spinBtn) spinBtn.disabled = names.length === 0 || isSpinning;
     centerSpinBtn.disabled = names.length === 0 || isSpinning;
     drawWheelCanvas(wheelCanvas, names, currentAngle);
   }
@@ -111,7 +113,7 @@ export function initApp(): void {
   function renderResultToStage(record: HistoryRecord): void {
     copyResultBtn.hidden = false;
     const built = buildResultContent(record);
-    resultCategoryTag.textContent = built.categoryTag;
+    if (resultCategoryTag) resultCategoryTag.textContent = built.categoryTag;
     resultTitle.textContent = built.title;
     resultBody.innerHTML = built.bodyHtml;
     lastPlainTextResult = built.plainText;
@@ -423,6 +425,7 @@ export function initApp(): void {
     groupCountInput.value = String(val);
   });
 
+  spinBtn?.addEventListener('click', spinWheel);
   centerSpinBtn.addEventListener('click', spinWheel);
 
   copyResultBtn.addEventListener('click', async () => {
