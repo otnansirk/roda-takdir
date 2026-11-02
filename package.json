@@ -6,7 +6,10 @@
     "dev": "astro dev",
     "start": "astro dev",
     "build": "astro build",
-    "preview": "astro preview"
+    "preview": "astro preview",
+    "cf:preview": "astro build && npx wrangler dev",
+    "deploy": "astro build && npx wrangler deploy",
+    "deploy:pages": "astro build && npx wrangler pages deploy dist --project-name roda-takdir-kelas"
   },
   "dependencies": {
     "astro": "^5.4.0"
