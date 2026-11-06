@@ -36,6 +36,10 @@ export function initApp(): void {
   const groupCountInput = document.getElementById('groupCountInput') as HTMLInputElement;
   const decGroupBtn = document.getElementById('decGroupBtn') as HTMLButtonElement;
   const incGroupBtn = document.getElementById('incGroupBtn') as HTMLButtonElement;
+  const customGroupNamesCheckbox = document.getElementById(
+    'customGroupNamesCheckbox'
+  ) as HTMLInputElement;
+  const customGroupNamesList = document.getElementById('customGroupNamesList') as HTMLElement;
   const removePickedCheckbox = document.getElementById('removePickedCheckbox') as HTMLInputElement;
 
   const spinBtn = document.getElementById('spinBtn') as HTMLButtonElement | null;
@@ -79,6 +83,37 @@ export function initApp(): void {
   let activeHistoryFilter: 'all' | SpinMode = 'all';
   let lastPlainTextResult = '';
   let modalPlainTextResult = '';
+  const customGroupNameValues: string[] = [];
+
+  function syncCustomGroupInputs(): void {
+    const count = Math.min(50, Math.max(2, parseInt(groupCountInput.value, 10) || 2));
+    customGroupNamesList
+      .querySelectorAll<HTMLInputElement>('.custom-group-input')
+      .forEach((input) => {
+        const idx = Number(input.dataset.groupIndex);
+        if (!Number.isNaN(idx)) {
+          customGroupNameValues[idx] = input.value;
+        }
+      });
+
+    const isCustom = customGroupNamesCheckbox.checked;
+    customGroupNamesList.hidden = !isCustom;
+    if (!isCustom) return;
+
+    customGroupNamesList.innerHTML = Array.from({ length: count }, (_, idx) => {
+      const savedVal = customGroupNameValues[idx] || '';
+      return `
+        <input
+          type="text"
+          class="custom-group-input"
+          data-group-index="${idx}"
+          placeholder="Kelompok ${idx + 1}"
+          value="${escapeHtml(savedVal)}"
+          aria-label="Nama Kelompok ${idx + 1}"
+        />
+      `;
+    }).join('');
+  }
 
   function getCleanNames(): string[] {
     return namesInput.value
@@ -127,7 +162,7 @@ export function initApp(): void {
     modalBody.innerHTML = built.bodyHtml;
     modalPlainTextResult = built.plainText;
 
-    modalCelebrationPill.hidden = !isCelebration;
+    if (modalCelebrationPill) modalCelebrationPill.hidden = !isCelebration;
     if (isCelebration) {
       if (record.mode === 'undian') {
         celebrationSubtext.textContent = 'Selamat kepada peserta yang terpilih pada undian ini!';
@@ -187,7 +222,10 @@ export function initApp(): void {
           badgeClass = 'kelompok';
           summaryHtml = `Pembagian <strong>${item.totalParticipants} nama</strong> ke ${item.groupCount || item.groups?.length || 0} kelompok`;
           previewText = (item.groups || [])
-            .map((g, i) => `K${i + 1}: ${g.join(', ')}`)
+            .map((g, i) => {
+              const gTitle = item.groupNames?.[i]?.trim() || `K${i + 1}`;
+              return `${gTitle}: ${g.join(', ')}`;
+            })
             .join(' · ');
         } else {
           badgeLabel = 'Urutan Nama';
@@ -257,12 +295,20 @@ export function initApp(): void {
         groups[idx % numGroups].push(person);
       });
 
+      const groupNames = customGroupNamesCheckbox.checked
+        ? Array.from({ length: numGroups }, (_, idx) => {
+            const val = (customGroupNameValues[idx] || '').trim();
+            return val || `Kelompok ${idx + 1}`;
+          })
+        : undefined;
+
       const record: HistoryRecord = {
         id,
         mode: 'kelompok',
         timestamp,
         totalParticipants: names.length,
         groupCount: numGroups,
+        groupNames,
         groups,
       };
 
@@ -418,11 +464,31 @@ export function initApp(): void {
   decGroupBtn.addEventListener('click', () => {
     const val = Math.max(2, (parseInt(groupCountInput.value, 10) || 2) - 1);
     groupCountInput.value = String(val);
+    syncCustomGroupInputs();
   });
 
   incGroupBtn.addEventListener('click', () => {
     const val = Math.min(50, (parseInt(groupCountInput.value, 10) || 2) + 1);
     groupCountInput.value = String(val);
+    syncCustomGroupInputs();
+  });
+
+  groupCountInput.addEventListener('input', syncCustomGroupInputs);
+  groupCountInput.addEventListener('change', () => {
+    const val = Math.min(50, Math.max(2, parseInt(groupCountInput.value, 10) || 2));
+    groupCountInput.value = String(val);
+    syncCustomGroupInputs();
+  });
+
+  customGroupNamesCheckbox.addEventListener('change', syncCustomGroupInputs);
+
+  customGroupNamesList.addEventListener('input', (e) => {
+    const target = e.target as HTMLInputElement;
+    if (!target.classList.contains('custom-group-input')) return;
+    const idx = Number(target.dataset.groupIndex);
+    if (!Number.isNaN(idx)) {
+      customGroupNameValues[idx] = target.value;
+    }
   });
 
   spinBtn?.addEventListener('click', spinWheel);

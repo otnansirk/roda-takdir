@@ -50,11 +50,12 @@ export function buildResultContent(record: HistoryRecord): BuiltResultContent {
 
   if (record.mode === 'kelompok' && record.groups) {
     const groupsHtml = record.groups
-      .map(
-        (members, idx) => `
+      .map((members, idx) => {
+        const groupTitle = record.groupNames?.[idx]?.trim() || `Kelompok ${idx + 1}`;
+        return `
         <div class="group-box">
           <div class="group-box-header">
-            <span class="group-box-title">Kelompok ${idx + 1}</span>
+            <span class="group-box-title">${escapeHtml(groupTitle)}</span>
             <span class="group-box-count">${members.length} anggota</span>
           </div>
           <ol class="group-member-list">
@@ -70,8 +71,8 @@ export function buildResultContent(record: HistoryRecord): BuiltResultContent {
               .join('')}
           </ol>
         </div>
-      `
-      )
+      `;
+      })
       .join('');
 
     return {
@@ -79,7 +80,10 @@ export function buildResultContent(record: HistoryRecord): BuiltResultContent {
       title: `Daftar ${record.groups.length} Kelompok (${record.totalParticipants} Nama)`,
       bodyHtml: `<div class="groups-grid">${groupsHtml}</div>`,
       plainText: record.groups
-        .map((members, idx) => `Kelompok ${idx + 1}:\n` + members.map((m, i) => `${i + 1}. ${m}`).join('\n'))
+        .map((members, idx) => {
+          const groupTitle = record.groupNames?.[idx]?.trim() || `Kelompok ${idx + 1}`;
+          return `${groupTitle}:\n` + members.map((m, i) => `${i + 1}. ${m}`).join('\n');
+        })
         .join('\n\n'),
     };
   }

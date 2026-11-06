@@ -73,6 +73,13 @@
           <button type="button" id="incGroupBtn" class="step-btn" aria-label="Tambah jumlah kelompok">+</button>
         </div>
       </label>
+
+      <label class="checkbox-label custom-group-checkbox">
+        <input type="checkbox" id="customGroupNamesCheckbox" />
+        <span>Gunakan nama kelompok custom</span>
+      </label>
+
+      <div id="customGroupNamesList" class="custom-group-inputs-grid" hidden></div>
     </div>
 
     <!-- Opsi Mode Undian -->
@@ -311,6 +318,42 @@
     cursor: pointer;
   }
 
+  .custom-group-checkbox {
+    margin-top: 0.65rem;
+    padding-top: 0.65rem;
+    border-top: 1px dashed var(--border-soft);
+  }
+
+  .custom-group-inputs-grid:not([hidden]) {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 0.5rem;
+    margin-top: 0.65rem;
+  }
+
+  #customGroupNamesList :global(.custom-group-input) {
+    width: 100%;
+    padding: 0.5rem 0.75rem;
+    border: 1.5px solid var(--border-soft);
+    border-radius: 10px;
+    background-color: #FFFFFF;
+    font-family: inherit;
+    font-size: 0.82rem;
+    font-weight: 600;
+    color: var(--text-dark);
+    transition: border-color 0.15s ease;
+  }
+
+  #customGroupNamesList :global(.custom-group-input::placeholder) {
+    color: var(--text-muted);
+    font-weight: 500;
+  }
+
+  #customGroupNamesList :global(.custom-group-input:focus) {
+    outline: none;
+    border-color: var(--purple-primary);
+  }
+
   textarea {
     width: 100%;
     resize: vertical;
@@ -337,7 +380,8 @@
   }
 
   @media (max-width: 560px) {
-    .mode-cards-grid {
+    .mode-cards-grid,
+    .custom-group-inputs-grid:not([hidden]) {
       grid-template-columns: 1fr;
     }
 

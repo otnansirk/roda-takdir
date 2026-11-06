@@ -6,6 +6,7 @@ export interface HistoryRecord {
   timestamp: string;
   totalParticipants: number;
   groupCount?: number;
+  groupNames?: string[];
   winner?: string;
   groups?: string[][];
   sequence?: string[];
