@@ -7,18 +7,17 @@ export const STORAGE_KEYS = {
 } as const;
 
 export const DEFAULT_SAMPLE_NAMES = [
-  'Alya Putri Ramadhani',
-  'Bima Arya Pratama',
-  'Citra Kirana Lestari',
-  'Daffa Rizky Ramadhan',
-  'Elena Sari Kusuma',
-  'Farhan Akbar Wijaya',
-  'Gita Nabila Permata',
-  'Hafiz Maulana Putra',
-  'Indira Septiani',
-  'Jovan Adi Nugroho',
-  'Kayla Maharani',
-  'Lutfi Hakim Saputra',
+  'Dimas Arif Prasetya',
+  'Krisnanto',
+  'Muhammad Rofiq Faisal',
+  'Wahyuni Edsa Safira',
+  'Ahmad Faqih Hidayat',
+  'Novita Kurniashella Wulandari',
+  'Nurfikriyah Auliani',
+  'Wenang Herdama Sugiyanto',
+  'Mochamad Thariq Zahir Abdillah',
+  'Syauqillah Hadie Ahsana',
+  'Dony Rahmad Agung Saputro',
 ];
 
 export function loadSavedNames(): string {
